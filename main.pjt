@@ -1,0 +1,25 @@
+[PROJECT]
+Target=C:\Users\xb\Desktop\Hole_Test_P'T\main.hex
+Development_Mode=
+Processor_Text=PIC18F8722
+ToolSuite=CCS
+Processor=0x8721
+[C:\Users\xb\Desktop\Hole_Test_P'T\main]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[mru-list]
+1=C:\Users\xb\Desktop\Hole_Test_P'T\main.c
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[Units]
+Link=0
+Count=1
+1=C:\Users\xb\Desktop\Hole_Test_P'T\main
+[Opened Files]
+1=main.c
+2=main.h
+3=

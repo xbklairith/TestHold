@@ -1,0 +1,1288 @@
+CCS PCH C Compiler, Version 4.105, 65315               30-May-14 10:35
+
+               Filename: C:\Users\xb\Desktop\Hole_Test_P'T\main.lst
+
+               ROM used: 1704 bytes (1%)
+                         Largest free fragment is 65536
+               RAM used: 243 (6%) at main() level
+                         254 (7%) worst case
+               Stack:    4 worst case (3 in main + 1 for interrupts)
+
+*
+00000:  GOTO   05DC
+*
+00008:  MOVWF  04
+0000A:  MOVFF  FD8,05
+0000E:  MOVFF  FE0,06
+00012:  MOVLB  0
+00014:  MOVFF  FE9,0C
+00018:  MOVFF  FEA,07
+0001C:  MOVFF  FE1,08
+00020:  MOVFF  FE2,09
+00024:  MOVFF  FD9,0A
+00028:  MOVFF  FDA,0B
+0002C:  MOVFF  FF3,12
+00030:  MOVFF  FF4,13
+00034:  MOVFF  FFA,14
+00038:  MOVFF  FF5,15
+0003C:  MOVFF  FF6,16
+00040:  MOVFF  FF7,17
+00044:  MOVFF  FF8,18
+00048:  MOVFF  FFB,19
+0004C:  MOVFF  00,0E
+00050:  MOVFF  01,0F
+00054:  MOVFF  02,10
+00058:  MOVFF  03,11
+0005C:  BTFSS  F9D.0
+0005E:  GOTO   0068
+00062:  BTFSC  F9E.0
+00064:  GOTO   0170
+00068:  BTFSS  FA3.5
+0006A:  GOTO   0074
+0006E:  BTFSC  FA4.5
+00070:  GOTO   00CA
+00074:  MOVFF  0E,00
+00078:  MOVFF  0F,01
+0007C:  MOVFF  10,02
+00080:  MOVFF  11,03
+00084:  MOVFF  0C,FE9
+00088:  MOVFF  07,FEA
+0008C:  BSF    07.7
+0008E:  MOVFF  08,FE1
+00092:  MOVFF  09,FE2
+00096:  MOVFF  0A,FD9
+0009A:  MOVFF  0B,FDA
+0009E:  MOVFF  12,FF3
+000A2:  MOVFF  13,FF4
+000A6:  MOVFF  14,FFA
+000AA:  MOVFF  15,FF5
+000AE:  MOVFF  16,FF6
+000B2:  MOVFF  17,FF7
+000B6:  MOVFF  18,FF8
+000BA:  MOVFF  19,FFB
+000BE:  MOVF   04,W
+000C0:  MOVFF  06,FE0
+000C4:  MOVFF  05,FD8
+000C8:  RETFIE 0
+.................... #include "C:\Users\xb\Desktop\Hole_Test_P'T\main.h" 
+.................... #include <18F8722.h> 
+.................... //////// Standard Header file for the PIC18F8722 device //////////////// 
+.................... #device PIC18F8722 
+.................... #list 
+....................  
+.................... #device adc=8 
+....................  
+.................... #FUSES NOWDT                    //No Watch Dog Timer 
+.................... #FUSES WDT128                   //Watch Dog Timer uses 1:128 Postscale 
+.................... #FUSES HS                       //Low power osc < 200 khz 
+.................... #FUSES NOPROTECT                //Code not protected from reading 
+.................... #FUSES IESO                     //Internal External Switch Over mode enabled 
+.................... #FUSES NOBROWNOUT               //No brownout reset 
+.................... #FUSES BORV20                   //Brownout reset at 2.0V 
+.................... #FUSES NOPUT                    //No Power Up Timer 
+.................... #FUSES NOCPD                    //No EE protection 
+.................... #FUSES STVREN                   //Stack full/underflow will cause reset 
+.................... #FUSES NODEBUG                  //No Debug mode for ICD 
+.................... #FUSES NOLVP                    //No low voltage prgming, B3(PIC16) or B5(PIC18) used for I/O 
+.................... #FUSES NOWRT                    //Program memory not write protected 
+.................... #FUSES NOCPB                    //No Boot Block code protection 
+.................... #FUSES NOEBTRB                  //Boot block not protected from table reads 
+.................... #FUSES NOEBTR                   //Memory not protected from table reads 
+.................... #FUSES NOWRTD                   //Data EEPROM not write protected 
+.................... #FUSES NOWRTC                   //configuration not registers write protected 
+.................... #FUSES NOWRTB                   //Boot block not write protected 
+.................... #FUSES FCMEN                    //Fail-safe clock monitor enabled 
+.................... #FUSES LPT1OSC                  //Timer1 configured for low-power operation 
+.................... #FUSES MCLR                     //Master Clear pin enabled 
+.................... #FUSES NOXINST                  //Extended set extension and Indexed Addressing mode disabled (Legacy mode) 
+.................... #FUSES MCU                      //Microcontroller Mode 
+.................... #FUSES NOWAIT                   //Wait selections unavailable for Table Reads or Table Writes 
+....................  
+.................... #use delay(clock=10000000) 
+*
+001E6:  CLRF   FEA
+001E8:  MOVLW  F7
+001EA:  MOVWF  FE9
+001EC:  MOVF   FEF,W
+001EE:  BZ    020C
+001F0:  MOVLW  03
+001F2:  MOVWF  01
+001F4:  CLRF   00
+001F6:  DECFSZ 00,F
+001F8:  BRA    01F6
+001FA:  DECFSZ 01,F
+001FC:  BRA    01F4
+001FE:  MOVLW  3C
+00200:  MOVWF  00
+00202:  DECFSZ 00,F
+00204:  BRA    0202
+00206:  BRA    0208
+00208:  DECFSZ FEF,F
+0020A:  BRA    01F0
+0020C:  RETLW  00
+.................... #use rs232(baud=9600,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,stop=1,stream=PIC) 
+.................... #use rs232(baud=57600,parity=N,xmit=PIN_G1,rcv=PIN_G2,bits=8,stop=1,stream=servo) 
+.................... void init() 
+.................... { 
+....................    setup_adc_ports(NO_ANALOGS|VSS_VDD); 
+*
+00180:  MOVF   FC1,W
+00182:  ANDLW  C0
+00184:  IORLW  0F
+00186:  MOVWF  FC1
+....................    setup_adc(ADC_CLOCK_DIV_2|ADC_TAD_MUL_0); 
+00188:  MOVF   FC0,W
+0018A:  ANDLW  C0
+0018C:  MOVWF  FC0
+0018E:  BCF    FC0.7
+00190:  BSF    FC2.0
+....................    setup_psp(PSP_DISABLED); 
+00192:  BCF    FB0.4
+....................    setup_spi(SPI_SS_DISABLED); 
+00194:  BCF    FC6.5
+00196:  BCF    F94.5
+00198:  BSF    F94.4
+0019A:  BCF    F94.3
+0019C:  MOVLW  01
+0019E:  MOVWF  FC6
+001A0:  MOVLW  00
+001A2:  MOVWF  FC7
+....................    setup_wdt(WDT_OFF); 
+001A4:  BCF    FD1.0
+....................    setup_timer_0(RTCC_INTERNAL); 
+001A6:  MOVLW  80
+001A8:  MOVWF  FD5
+....................    setup_timer_1 (T1_INTERNAL|T1_DIV_BY_4); 
+001AA:  MOVLW  A5
+001AC:  MOVWF  FCD
+....................    setup_timer_2(T2_DISABLED,0,1); 
+001AE:  MOVLW  00
+001B0:  MOVWF  FCA
+001B2:  MOVLW  00
+001B4:  MOVWF  FCB
+....................    setup_timer_4(T4_DISABLED,0,1); 
+001B6:  MOVWF  F76
+001B8:  MOVLW  00
+001BA:  MOVWF  F77
+....................    setup_ccp1(CCP_OFF); 
+001BC:  BSF    F94.2
+001BE:  CLRF   FBD
+001C0:  CLRF   F79
+001C2:  CLRF   FB6
+....................    setup_comparator(NC_NC_NC_NC); 
+001C4:  MOVLW  07
+001C6:  MOVWF  FB4
+001C8:  MOVF   F97,W
+001CA:  MOVWF  F97
+001CC:  MOVLW  08
+001CE:  MOVWF  00
+001D0:  DECFSZ 00,F
+001D2:  BRA    01D0
+001D4:  MOVF   FB4,W
+001D6:  BCF    FA1.6
+....................    setup_vref(FALSE); 
+001D8:  CLRF   FB5
+....................    enable_interrupts(INT_RDA2); 
+001DA:  BSF    FA3.5
+....................    enable_interrupts(INT_TIMER1); 
+001DC:  BSF    F9D.0
+....................    enable_interrupts(GLOBAL); 
+001DE:  MOVLW  C0
+001E0:  IORWF  FF2,F
+....................  
+....................  
+....................  
+.................... //Setup_Oscillator parameter not selected from Intr Oscillator Config tab 
+....................  
+....................    // TODO: USER CODE!! 
+....................  
+.................... } 
+001E2:  GOTO   0630 (RETURN)
+....................  
+....................  
+.................... #define buttonBlue input(PIN_D0) 
+.................... #define buttonWhite input(PIN_D1) 
+.................... #define buttonBlack input(PIN_D2) 
+.................... #define buttonGreen input(PIN_D3) 
+....................  
+.................... //sensor for catch dish 
+.................... #define senLeftUP input(PIN_E2) 
+.................... #define senLeftDown input(PIN_E3) 
+.................... #define senRightUp input(PIN_E4) 
+.................... #define senRightDown input(PIN_E5) 
+....................  
+.................... //keeper for catch dish (pneumatic) 
+.................... #define keeperRight PIN_E0 
+.................... #define keeperLeft PIN_E1 
+....................  
+.................... ///48 mil sensors form outside 
+....................  
+.................... int cntStep = 0; 
+.................... int toggle_feed = 0; 
+.................... int state = 0; 
+.................... int state1 = 0; 
+.................... int state2 = 0; 
+.................... int state3 = 0; 
+.................... int stateL = 0; 
+.................... int stateR = 0; 
+.................... int angleLeft = 512; 
+.................... int angleRight = 512; 
+.................... unsigned int err = 0; 
+.................... /*void servoTest(int16 pos,int16 speedServo){ //ID 2 //more cw , less ccw    
+....................  
+....................    unsigned char chksum; 
+....................    chksum=0x2c;  
+....................    chksum+=pos;  
+....................    chksum+=pos>>8; 
+....................    chksum+=speedServo; 
+....................    chksum+=speedServo>>8; 
+....................    chksum=~chksum;  
+....................    fprintf(servo,"%c%c%c%c%c%c%c%c%c%c%c\r\n",0xff,0xff,0x04,0x07,0x03,0x1e,pos,pos>>8,  
+....................       speedServo,speedServo>>8,chksum);  
+....................    //fprintf(servo,"%c%c%c%c%c%c%c%c%c%c%c\r\n",0xff,0xff,0x02,0x07,0x03,0x1e,pos,pos>>8,  
+....................      // 0x00,0x02,chksum);  
+....................     
+....................    //delay_ms(10); 
+.................... } */ 
+....................  
+.................... int indexRD2=0; 
+.................... char buff[100]; 
+.................... int isRespond=0; 
+.................... char cRespond[100]; 
+.................... int iRespond; 
+.................... int ii=0; 
+.................... void autokeep(); 
+.................... #INT_RDA2 
+.................... void _rda2_isr(){ 
+....................    buff[indexRD2]=fgetc(servo); 
+*
+000CA:  CLRF   03
+000CC:  MOVF   26,W
+000CE:  ADDLW  27
+000D0:  MOVWF  FE9
+000D2:  MOVLW  00
+000D4:  ADDWFC 03,W
+000D6:  MOVWF  FEA
+000D8:  BTFSS  FA4.5
+000DA:  BRA    00D8
+000DC:  MOVFF  F6E,FEF
+....................    if(indexRD2>2){ 
+000E0:  MOVF   26,W
+000E2:  SUBLW  02
+000E4:  BC    0168
+....................       if((buff[indexRD2-1]==0xff)&&(buff[indexRD2]==0xff)){ 
+000E6:  MOVLW  01
+000E8:  SUBWF  26,W
+000EA:  CLRF   03
+000EC:  ADDLW  27
+000EE:  MOVWF  FE9
+000F0:  MOVLW  00
+000F2:  ADDWFC 03,W
+000F4:  MOVWF  FEA
+000F6:  INCFSZ FEF,W
+000F8:  BRA    015A
+000FA:  CLRF   03
+000FC:  MOVF   26,W
+000FE:  ADDLW  27
+00100:  MOVWF  FE9
+00102:  MOVLW  00
+00104:  ADDWFC 03,W
+00106:  MOVWF  FEA
+00108:  INCFSZ FEF,W
+0010A:  BRA    015A
+....................          
+....................          for(ii=0;ii<=indexRD2;ii++){ 
+0010C:  CLRF   xF1
+0010E:  MOVF   xF1,W
+00110:  SUBWF  26,W
+00112:  BNC   0146
+....................             cRespond[ii]=buff[ii]; 
+00114:  CLRF   03
+00116:  MOVF   xF1,W
+00118:  ADDLW  8C
+0011A:  MOVWF  01
+0011C:  MOVLW  00
+0011E:  ADDWFC 03,F
+00120:  MOVFF  03,FC
+00124:  CLRF   03
+00126:  MOVF   xF1,W
+00128:  ADDLW  27
+0012A:  MOVWF  FE9
+0012C:  MOVLW  00
+0012E:  ADDWFC 03,W
+00130:  MOVWF  FEA
+00132:  MOVFF  FEF,FD
+00136:  MOVFF  FC,FEA
+0013A:  MOVFF  01,FE9
+0013E:  MOVFF  FD,FEF
+....................          } 
+00142:  INCF   xF1,F
+00144:  BRA    010E
+....................          output_toggle(PIN_H0); 
+00146:  BCF    F99.0
+00148:  BTG    F90.0
+....................          iRespond=indexRD2; 
+0014A:  MOVFF  26,F0
+....................          if(isRespond==0){ 
+0014E:  MOVF   x8B,F
+00150:  BNZ   0154
+....................             indexRD2=0; 
+00152:  CLRF   26
+....................          } 
+....................          isRespond=1; 
+00154:  MOVLW  01
+00156:  MOVWF  x8B
+....................           
+....................       } 
+....................       else if(indexRD2>90){ 
+00158:  BRA    0166
+0015A:  MOVF   26,W
+0015C:  SUBLW  5A
+0015E:  BC    0164
+....................          indexRD2=0; 
+00160:  CLRF   26
+....................       } 
+....................       else{ 
+00162:  BRA    0166
+....................          indexRD2++; 
+00164:  INCF   26,F
+....................       } 
+....................    } 
+....................    else{ 
+00166:  BRA    016A
+....................       indexRD2++; 
+00168:  INCF   26,F
+....................    } 
+.................... } 
+0016A:  BCF    FA4.5
+0016C:  GOTO   0074
+.................... #INT_TIMER1 
+.................... void timer(){ 
+....................  //  autokeep(); 
+.................... } 
+00170:  BCF    F9E.0
+00172:  GOTO   0074
+.................... void autokeep(){ 
+....................    if(senLeftDown&&stateL==0){ 
+....................       output_high(keeperLeft); 
+....................       stateL=1; 
+....................    } 
+....................    if(senRightUp&&stateR==0){ 
+....................       output_high(keeperRight); 
+....................       stateR=1; 
+....................    } 
+....................    if(senLeftUp&&stateL==1){ 
+....................       output_high(keeperLeft); 
+....................       stateL=0; 
+....................    } 
+....................    if(senRightDown&&stateR==1){ 
+....................       output_high(keeperRight); 
+....................       stateR=0; 
+....................    } 
+....................    
+....................     
+.................... } 
+.................... void servoRight(int16 pos,int16 speedServo){ //ID 2 //more cw , less ccw    
+....................  
+....................    unsigned char chksum; 
+....................    chksum=0x2a;  
+*
+002A0:  MOVLW  2A
+002A2:  MOVWF  xF6
+....................    chksum+=pos;  
+002A4:  MOVF   xF2,W
+002A6:  ADDWF  xF6,F
+....................    chksum+=pos>>8; 
+002A8:  MOVF   xF3,W
+002AA:  ADDWF  xF6,F
+....................    chksum+=speedServo; 
+002AC:  MOVF   xF4,W
+002AE:  ADDWF  xF6,F
+....................    chksum+=speedServo>>8; 
+002B0:  MOVF   xF5,W
+002B2:  ADDWF  xF6,F
+....................    chksum=~chksum;  
+002B4:  COMF   xF6,F
+....................    fprintf(servo,"%c%c%c%c%c%c%c%c%c%c%c\r\n",0xff,0xff,0x02,0x07,0x03,0x1e,pos,pos>>8,  
+....................       speedServo,speedServo>>8,chksum);  
+002B6:  MOVFF  F3,F7
+002BA:  CLRF   xF8
+002BC:  MOVFF  F5,F9
+002C0:  CLRF   xFA
+002C2:  MOVLW  FF
+002C4:  BTFSS  FA4.4
+002C6:  BRA    02C4
+002C8:  MOVWF  F6D
+002CA:  MOVLW  FF
+002CC:  BTFSS  FA4.4
+002CE:  BRA    02CC
+002D0:  MOVWF  F6D
+002D2:  MOVLW  02
+002D4:  BTFSS  FA4.4
+002D6:  BRA    02D4
+002D8:  MOVWF  F6D
+002DA:  MOVLW  07
+002DC:  BTFSS  FA4.4
+002DE:  BRA    02DC
+002E0:  MOVWF  F6D
+002E2:  MOVLW  03
+002E4:  BTFSS  FA4.4
+002E6:  BRA    02E4
+002E8:  MOVWF  F6D
+002EA:  MOVLW  1E
+002EC:  BTFSS  FA4.4
+002EE:  BRA    02EC
+002F0:  MOVWF  F6D
+002F2:  MOVF   xF2,W
+002F4:  BTFSS  FA4.4
+002F6:  BRA    02F4
+002F8:  MOVWF  F6D
+002FA:  MOVF   xF7,W
+002FC:  BTFSS  FA4.4
+002FE:  BRA    02FC
+00300:  MOVWF  F6D
+00302:  MOVF   xF4,W
+00304:  BTFSS  FA4.4
+00306:  BRA    0304
+00308:  MOVWF  F6D
+0030A:  MOVF   xF9,W
+0030C:  BTFSS  FA4.4
+0030E:  BRA    030C
+00310:  MOVWF  F6D
+00312:  MOVF   xF6,W
+00314:  BTFSS  FA4.4
+00316:  BRA    0314
+00318:  MOVWF  F6D
+0031A:  MOVLW  0D
+0031C:  BTFSS  FA4.4
+0031E:  BRA    031C
+00320:  MOVWF  F6D
+00322:  MOVLW  0A
+00324:  BTFSS  FA4.4
+00326:  BRA    0324
+00328:  MOVWF  F6D
+....................    delay_ms(20); 
+0032A:  MOVLW  14
+0032C:  MOVWF  xF7
+0032E:  RCALL  01E6
+.................... }  
+00330:  RETLW  00
+.................... void servoLeft(int16 pos,int16 speedServo){ //ID 4 //more cw ,less ,ccw  
+....................    unsigned char chksum; 
+....................    chksum=0x2c;  
+*
+0020E:  MOVLW  2C
+00210:  MOVWF  xF6
+....................    chksum+=pos;  
+00212:  MOVF   xF2,W
+00214:  ADDWF  xF6,F
+....................    chksum+=pos>>8; 
+00216:  MOVF   xF3,W
+00218:  ADDWF  xF6,F
+....................    chksum+=speedServo; 
+0021A:  MOVF   xF4,W
+0021C:  ADDWF  xF6,F
+....................    chksum+=speedServo>>8; 
+0021E:  MOVF   xF5,W
+00220:  ADDWF  xF6,F
+....................    chksum=~chksum;  
+00222:  COMF   xF6,F
+....................    fprintf(servo,"%c%c%c%c%c%c%c%c%c%c%c\r\n",0xff,0xff,0x04,0x07,0x03,0x1e,pos,pos>>8,  
+....................       speedServo,speedServo>>8,chksum);  
+00224:  MOVFF  F3,F7
+00228:  CLRF   xF8
+0022A:  MOVFF  F5,F9
+0022E:  CLRF   xFA
+00230:  MOVLW  FF
+00232:  BTFSS  FA4.4
+00234:  BRA    0232
+00236:  MOVWF  F6D
+00238:  MOVLW  FF
+0023A:  BTFSS  FA4.4
+0023C:  BRA    023A
+0023E:  MOVWF  F6D
+00240:  MOVLW  04
+00242:  BTFSS  FA4.4
+00244:  BRA    0242
+00246:  MOVWF  F6D
+00248:  MOVLW  07
+0024A:  BTFSS  FA4.4
+0024C:  BRA    024A
+0024E:  MOVWF  F6D
+00250:  MOVLW  03
+00252:  BTFSS  FA4.4
+00254:  BRA    0252
+00256:  MOVWF  F6D
+00258:  MOVLW  1E
+0025A:  BTFSS  FA4.4
+0025C:  BRA    025A
+0025E:  MOVWF  F6D
+00260:  MOVF   xF2,W
+00262:  BTFSS  FA4.4
+00264:  BRA    0262
+00266:  MOVWF  F6D
+00268:  MOVF   xF7,W
+0026A:  BTFSS  FA4.4
+0026C:  BRA    026A
+0026E:  MOVWF  F6D
+00270:  MOVF   xF4,W
+00272:  BTFSS  FA4.4
+00274:  BRA    0272
+00276:  MOVWF  F6D
+00278:  MOVF   xF9,W
+0027A:  BTFSS  FA4.4
+0027C:  BRA    027A
+0027E:  MOVWF  F6D
+00280:  MOVF   xF6,W
+00282:  BTFSS  FA4.4
+00284:  BRA    0282
+00286:  MOVWF  F6D
+00288:  MOVLW  0D
+0028A:  BTFSS  FA4.4
+0028C:  BRA    028A
+0028E:  MOVWF  F6D
+00290:  MOVLW  0A
+00292:  BTFSS  FA4.4
+00294:  BRA    0292
+00296:  MOVWF  F6D
+....................    delay_ms(20);  
+00298:  MOVLW  14
+0029A:  MOVWF  xF7
+0029C:  RCALL  01E6
+.................... }  
+0029E:  RETLW  00
+.................... void testSwitch_Sen() 
+.................... { 
+....................    fprintf(servo,"%d,%d,%d,%d\n\r",buttonBlue,buttonWhite,buttonBlack,buttonGreen); 
+....................    fprintf(servo,"%d,%d,%d,%d\n\r",senLeftUp,senLeftDown,senRightUp,senRightDown); 
+.................... } 
+....................  
+.................... void testAngle() 
+.................... { 
+....................    if(buttonBlue==0){ 
+....................       angleLeft++; 
+....................    } 
+....................    else if(buttonWhite==0){ 
+....................       angleLeft--; 
+....................    } 
+....................     
+....................    if(buttonBlack==0) 
+....................    { 
+....................       angleRight++; 
+....................    } 
+....................    else if(buttonGreen==0) 
+....................    { 
+....................       angleRight--; 
+....................    } 
+....................     
+....................    if(angleRight<=0){ angleRight = 0;} 
+....................    else if(angleRight>=1023){angleLeft = 1023;} 
+....................     
+....................    if(angleLeft<=0){ angleRight = 0;} 
+....................    else if(angleLeft>=1023){angleLeft = 1023;} 
+....................  
+....................    
+.................... } 
+....................  
+.................... void hole_move_blue() 
+.................... { 
+....................    ////hole1 to hole2 
+....................    output_low(keeperLeft); 
+*
+004C6:  BCF    F96.1
+004C8:  BCF    F8D.1
+....................    output_low(keeperRight); 
+004CA:  BCF    F96.0
+004CC:  BCF    F8D.0
+....................    servoRight(512,400); 
+004CE:  MOVLW  02
+004D0:  MOVWF  xF3
+004D2:  CLRF   xF2
+004D4:  MOVLW  01
+004D6:  MOVWF  xF5
+004D8:  MOVLW  90
+004DA:  MOVWF  xF4
+004DC:  RCALL  02A0
+....................    delay_ms(100); 
+004DE:  MOVLW  64
+004E0:  MOVWF  xF7
+004E2:  RCALL  01E6
+....................    servoLeft(850,700); 
+004E4:  MOVLW  03
+004E6:  MOVWF  xF3
+004E8:  MOVLW  52
+004EA:  MOVWF  xF2
+004EC:  MOVLW  02
+004EE:  MOVWF  xF5
+004F0:  MOVLW  BC
+004F2:  MOVWF  xF4
+004F4:  RCALL  020E
+....................    delay_ms(1000); 
+004F6:  MOVLW  04
+004F8:  MOVWF  xF2
+004FA:  MOVLW  FA
+004FC:  MOVWF  xF7
+004FE:  RCALL  01E6
+00500:  DECFSZ xF2,F
+00502:  BRA    04FA
+....................    output_high(keeperRight); 
+00504:  BCF    F96.0
+00506:  BSF    F8D.0
+....................    //delay_ms(1500); 
+....................    servoRight(200,350); 
+00508:  CLRF   xF3
+0050A:  MOVLW  C8
+0050C:  MOVWF  xF2
+0050E:  MOVLW  01
+00510:  MOVWF  xF5
+00512:  MOVLW  5E
+00514:  MOVWF  xF4
+00516:  RCALL  02A0
+....................    while(!senLeftUp); 
+00518:  BSF    F96.2
+0051A:  BTFSS  F84.2
+0051C:  BRA    0518
+....................    output_high(keeperLeft); 
+0051E:  BCF    F96.1
+00520:  BSF    F8D.1
+....................    ////hole2 to hole3 
+....................    delay_ms(200); 
+00522:  MOVLW  C8
+00524:  MOVWF  xF7
+00526:  RCALL  01E6
+....................    output_low(keeperRight); 
+00528:  BCF    F96.0
+0052A:  BCF    F8D.0
+....................    delay_ms(200); 
+0052C:  MOVLW  C8
+0052E:  MOVWF  xF7
+00530:  RCALL  01E6
+....................    servoRight(725,500); 
+00532:  MOVLW  02
+00534:  MOVWF  xF3
+00536:  MOVLW  D5
+00538:  MOVWF  xF2
+0053A:  MOVLW  01
+0053C:  MOVWF  xF5
+0053E:  MOVLW  F4
+00540:  MOVWF  xF4
+00542:  RCALL  02A0
+....................    delay_ms(100); 
+00544:  MOVLW  64
+00546:  MOVWF  xF7
+00548:  RCALL  01E6
+....................    servoLeft(240,500); 
+0054A:  CLRF   xF3
+0054C:  MOVLW  F0
+0054E:  MOVWF  xF2
+00550:  MOVLW  01
+00552:  MOVWF  xF5
+00554:  MOVLW  F4
+00556:  MOVWF  xF4
+00558:  RCALL  020E
+....................    while(!senRightUp); 
+0055A:  BSF    F96.4
+0055C:  BTFSS  F84.4
+0055E:  BRA    055A
+....................    output_high(keeperRight); 
+00560:  BCF    F96.0
+00562:  BSF    F8D.0
+....................    ////hole3 to hole 4 
+....................    delay_ms(200); 
+00564:  MOVLW  C8
+00566:  MOVWF  xF7
+00568:  RCALL  01E6
+....................    output_low(keeperLeft); 
+0056A:  BCF    F96.1
+0056C:  BCF    F8D.1
+....................    delay_ms(200); 
+0056E:  MOVLW  C8
+00570:  MOVWF  xF7
+00572:  RCALL  01E6
+....................    servoLeft(650,500); 
+00574:  MOVLW  02
+00576:  MOVWF  xF3
+00578:  MOVLW  8A
+0057A:  MOVWF  xF2
+0057C:  MOVLW  01
+0057E:  MOVWF  xF5
+00580:  MOVLW  F4
+00582:  MOVWF  xF4
+00584:  RCALL  020E
+....................    delay_ms(200); 
+00586:  MOVLW  C8
+00588:  MOVWF  xF7
+0058A:  RCALL  01E6
+....................    servoRight(130,500); 
+0058C:  CLRF   xF3
+0058E:  MOVLW  82
+00590:  MOVWF  xF2
+00592:  MOVLW  01
+00594:  MOVWF  xF5
+00596:  MOVLW  F4
+00598:  MOVWF  xF4
+0059A:  RCALL  02A0
+....................    while(!senLeftDown); 
+0059C:  BSF    F96.3
+0059E:  BTFSS  F84.3
+005A0:  BRA    059C
+....................    //delay_ms(1100); 
+....................    output_high(keeperLeft); 
+005A2:  BCF    F96.1
+005A4:  BSF    F8D.1
+....................    delay_ms(200); 
+005A6:  MOVLW  C8
+005A8:  MOVWF  xF7
+005AA:  RCALL  01E6
+....................    /* 
+....................    //finish// 
+....................    output_low(keeperRight); 
+....................    delay_ms(300); 
+....................    servoRight(512,200); 
+....................    delay_ms(100); 
+....................    servoLeft(512,200); 
+.................... */    
+.................... } 
+005AC:  GOTO   0688 (RETURN)
+.................... /* 
+.................... void hole_move_red() 
+.................... { 
+....................    ////hole1 to hole2 
+....................    output_low(keeperLeft); 
+....................    output_low(keeperRight); 
+....................    servoLeft(512,300); 
+....................    delay_ms(100); 
+....................    servoRight(200,400); 
+....................    delay_ms(1000); 
+....................    output_high(keeperLeft); 
+....................    //delay_ms(1500); 
+....................    servoLeft(700,400); 
+....................    while(!senRightUp); 
+....................    output_high(keeperRight); 
+....................    ////hole2 to hole3 
+....................    delay_ms(200); 
+....................    output_low(keeperLeft); 
+....................    delay_ms(200); 
+....................    servoLeft(315,500); 
+....................    delay_ms(100); 
+....................    servoRight(690,500); 
+....................    while(!senLeftUp); 
+....................    output_high(keeperLeft); 
+....................    ////hole3 to hole 4 
+....................    delay_ms(200); 
+....................    output_low(keeperRight); 
+....................    delay_ms(200); 
+....................    servoRight(330,400); 
+....................    delay_ms(200); 
+....................    servoLeft(800,400); 
+....................    while(!senRightDown); 
+....................    //delay_ms(1100); 
+....................    output_high(keeperRight); 
+....................    delay_ms(200); 
+....................    //finish// 
+....................    //output_low(keeperLeft); 
+....................    //delay_ms(300); 
+....................    //servoLeft(512,500); 
+....................    //delay_ms(100); 
+....................    //servoRight(512,500); 
+....................     
+.................... }*/ 
+....................  
+.................... void hole_move_red() 
+.................... { 
+....................    ////hole1 to hole2 
+....................    output_low(keeperLeft); 
+*
+00364:  BCF    F96.1
+00366:  BCF    F8D.1
+....................    output_low(keeperRight); 
+00368:  BCF    F96.0
+0036A:  BCF    F8D.0
+....................    servoLeft(512,400); 
+0036C:  MOVLW  02
+0036E:  MOVWF  xF3
+00370:  CLRF   xF2
+00372:  MOVLW  01
+00374:  MOVWF  xF5
+00376:  MOVLW  90
+00378:  MOVWF  xF4
+0037A:  RCALL  020E
+....................    delay_ms(100); 
+0037C:  MOVLW  64
+0037E:  MOVWF  xF7
+00380:  RCALL  01E6
+....................    servoRight(200,500); 
+00382:  CLRF   xF3
+00384:  MOVLW  C8
+00386:  MOVWF  xF2
+00388:  MOVLW  01
+0038A:  MOVWF  xF5
+0038C:  MOVLW  F4
+0038E:  MOVWF  xF4
+00390:  RCALL  02A0
+....................    delay_ms(1000); 
+00392:  MOVLW  04
+00394:  MOVWF  xF2
+00396:  MOVLW  FA
+00398:  MOVWF  xF7
+0039A:  RCALL  01E6
+0039C:  DECFSZ xF2,F
+0039E:  BRA    0396
+....................    output_high(keeperLeft); 
+003A0:  BCF    F96.1
+003A2:  BSF    F8D.1
+....................    //delay_ms(1500); 
+....................    servoLeft(700,450); 
+003A4:  MOVLW  02
+003A6:  MOVWF  xF3
+003A8:  MOVLW  BC
+003AA:  MOVWF  xF2
+003AC:  MOVLW  01
+003AE:  MOVWF  xF5
+003B0:  MOVLW  C2
+003B2:  MOVWF  xF4
+003B4:  RCALL  020E
+....................    while(!senRightUp); 
+003B6:  BSF    F96.4
+003B8:  BTFSS  F84.4
+003BA:  BRA    03B6
+....................    output_high(keeperRight); 
+003BC:  BCF    F96.0
+003BE:  BSF    F8D.0
+....................    ////hole2 to hole3 
+....................    delay_ms(200); 
+003C0:  MOVLW  C8
+003C2:  MOVWF  xF7
+003C4:  RCALL  01E6
+....................    output_low(keeperLeft); 
+003C6:  BCF    F96.1
+003C8:  BCF    F8D.1
+....................    delay_ms(200); 
+003CA:  MOVLW  C8
+003CC:  MOVWF  xF7
+003CE:  RCALL  01E6
+....................    servoLeft(315,700); 
+003D0:  MOVLW  01
+003D2:  MOVWF  xF3
+003D4:  MOVLW  3B
+003D6:  MOVWF  xF2
+003D8:  MOVLW  02
+003DA:  MOVWF  xF5
+003DC:  MOVLW  BC
+003DE:  MOVWF  xF4
+003E0:  RCALL  020E
+....................    delay_ms(100); 
+003E2:  MOVLW  64
+003E4:  MOVWF  xF7
+003E6:  RCALL  01E6
+....................    servoRight(600,1000); 
+003E8:  MOVLW  02
+003EA:  MOVWF  xF3
+003EC:  MOVLW  58
+003EE:  MOVWF  xF2
+003F0:  MOVLW  03
+003F2:  MOVWF  xF5
+003F4:  MOVLW  E8
+003F6:  MOVWF  xF4
+003F8:  RCALL  02A0
+....................    delay_ms(500); 
+003FA:  MOVLW  02
+003FC:  MOVWF  xF2
+003FE:  MOVLW  FA
+00400:  MOVWF  xF7
+00402:  RCALL  01E6
+00404:  DECFSZ xF2,F
+00406:  BRA    03FE
+....................    servoRight(850,700); 
+00408:  MOVLW  03
+0040A:  MOVWF  xF3
+0040C:  MOVLW  52
+0040E:  MOVWF  xF2
+00410:  MOVLW  02
+00412:  MOVWF  xF5
+00414:  MOVLW  BC
+00416:  MOVWF  xF4
+00418:  RCALL  02A0
+....................    while(!senLeftUp); 
+0041A:  BSF    F96.2
+0041C:  BTFSS  F84.2
+0041E:  BRA    041A
+....................    output_high(keeperLeft); 
+00420:  BCF    F96.1
+00422:  BSF    F8D.1
+....................    ////hole3 to hole 4 
+....................    delay_ms(200); 
+00424:  MOVLW  C8
+00426:  MOVWF  xF7
+00428:  RCALL  01E6
+....................    output_low(keeperRight); 
+0042A:  BCF    F96.0
+0042C:  BCF    F8D.0
+....................    delay_ms(200); 
+0042E:  MOVLW  C8
+00430:  MOVWF  xF7
+00432:  RCALL  01E6
+....................    servoRight(390,700); 
+00434:  MOVLW  01
+00436:  MOVWF  xF3
+00438:  MOVLW  86
+0043A:  MOVWF  xF2
+0043C:  MOVLW  02
+0043E:  MOVWF  xF5
+00440:  MOVLW  BC
+00442:  MOVWF  xF4
+00444:  RCALL  02A0
+....................    delay_ms(200); 
+00446:  MOVLW  C8
+00448:  MOVWF  xF7
+0044A:  RCALL  01E6
+....................    servoLeft(600,1000); 
+0044C:  MOVLW  02
+0044E:  MOVWF  xF3
+00450:  MOVLW  58
+00452:  MOVWF  xF2
+00454:  MOVLW  03
+00456:  MOVWF  xF5
+00458:  MOVLW  E8
+0045A:  MOVWF  xF4
+0045C:  RCALL  020E
+....................    delay_ms(500); 
+0045E:  MOVLW  02
+00460:  MOVWF  xF2
+00462:  MOVLW  FA
+00464:  MOVWF  xF7
+00466:  RCALL  01E6
+00468:  DECFSZ xF2,F
+0046A:  BRA    0462
+....................    servoLeft(850,700); 
+0046C:  MOVLW  03
+0046E:  MOVWF  xF3
+00470:  MOVLW  52
+00472:  MOVWF  xF2
+00474:  MOVLW  02
+00476:  MOVWF  xF5
+00478:  MOVLW  BC
+0047A:  MOVWF  xF4
+0047C:  RCALL  020E
+....................    while(!senRightDown); 
+0047E:  BSF    F96.5
+00480:  BTFSS  F84.5
+00482:  BRA    047E
+....................    //delay_ms(1100); 
+....................    output_high(keeperRight); 
+00484:  BCF    F96.0
+00486:  BSF    F8D.0
+....................    delay_ms(200); 
+00488:  MOVLW  C8
+0048A:  MOVWF  xF7
+0048C:  RCALL  01E6
+....................    //finish// 
+....................    output_low(keeperLeft); 
+0048E:  BCF    F96.1
+00490:  BCF    F8D.1
+....................    delay_ms(300); 
+00492:  MOVLW  02
+00494:  MOVWF  xF2
+00496:  MOVLW  96
+00498:  MOVWF  xF7
+0049A:  RCALL  01E6
+0049C:  DECFSZ xF2,F
+0049E:  BRA    0496
+....................    servoLeft(512,600); 
+004A0:  MOVLW  02
+004A2:  MOVWF  xF3
+004A4:  CLRF   xF2
+004A6:  MOVWF  xF5
+004A8:  MOVLW  58
+004AA:  MOVWF  xF4
+004AC:  RCALL  020E
+....................    delay_ms(100); 
+004AE:  MOVLW  64
+004B0:  MOVWF  xF7
+004B2:  RCALL  01E6
+....................    servoRight(512,600); 
+004B4:  MOVLW  02
+004B6:  MOVWF  xF3
+004B8:  CLRF   xF2
+004BA:  MOVWF  xF5
+004BC:  MOVLW  58
+004BE:  MOVWF  xF4
+004C0:  RCALL  02A0
+.................... } 
+004C2:  GOTO   066A (RETURN)
+.................... void home_test_seesaw()//L=69 for home - seesaw=940  , R=975 for home - seesaw=105 
+.................... { 
+....................    output_low(keeperRight); 
+*
+00332:  BCF    F96.0
+00334:  BCF    F8D.0
+....................    output_low(keeperLeft); 
+00336:  BCF    F96.1
+00338:  BCF    F8D.1
+....................    servoLeft(512,300); 
+0033A:  MOVLW  02
+0033C:  MOVWF  xF3
+0033E:  CLRF   xF2
+00340:  MOVLW  01
+00342:  MOVWF  xF5
+00344:  MOVLW  2C
+00346:  MOVWF  xF4
+00348:  RCALL  020E
+....................    delay_ms(100); 
+0034A:  MOVLW  64
+0034C:  MOVWF  xF7
+0034E:  RCALL  01E6
+....................    servoRight(512,300); 
+00350:  MOVLW  02
+00352:  MOVWF  xF3
+00354:  CLRF   xF2
+00356:  MOVLW  01
+00358:  MOVWF  xF5
+0035A:  MOVLW  2C
+0035C:  MOVWF  xF4
+0035E:  RCALL  02A0
+.................... } 
+00360:  GOTO   064C (RETURN)
+.................... void enableTorque(int id){ 
+....................     
+....................    unsigned int chk=id+5+3+ 0x18 +1+1 ; 
+....................    chk=~chk; 
+....................    fputc(0xff,servo); 
+....................    fputc(0xff,servo); 
+....................    fputc(id,servo); 
+....................    fputc(0x05,servo); 
+....................    fputc(0x03,servo); 
+....................    fputc(0x18,servo); 
+....................    fputc(0x01,servo); 
+....................    fputc(0x01,servo); 
+....................    fputc(chk,servo); 
+....................     
+....................     
+.................... } 
+.................... void seesaw() 
+.................... { 
+....................    while(1){ 
+....................    servoLeft(940,300); 
+....................    delay_ms(200); 
+....................    servoRight(105,300); 
+....................    delay_ms(200); 
+....................    if(isRespond==1){ 
+....................       int i; 
+....................       for(i=0;i<=iRespond*2;i++){ 
+....................          fputc(cRespond[i],PIC); 
+....................           
+....................       } 
+....................       if(cRespond[2]==0x20){ 
+....................          fprintf(PIC,"OVERLOAD"); 
+....................          enableTorque(4); 
+....................          enableTorque(2); 
+....................       } 
+....................       isRespond=0; 
+....................    } 
+....................    //fputc(0xfb,PIC); 
+....................    //fputc(0xfa,PIC); 
+....................    } 
+.................... } 
+.................... void home() 
+.................... { 
+....................    servoLeft(69,300); 
+*
+005B0:  CLRF   xF3
+005B2:  MOVLW  45
+005B4:  MOVWF  xF2
+005B6:  MOVLW  01
+005B8:  MOVWF  xF5
+005BA:  MOVLW  2C
+005BC:  MOVWF  xF4
+005BE:  RCALL  020E
+....................    delay_ms(50); 
+005C0:  MOVLW  32
+005C2:  MOVWF  xF7
+005C4:  RCALL  01E6
+....................    servoRight(975,300); 
+005C6:  MOVLW  03
+005C8:  MOVWF  xF3
+005CA:  MOVLW  CF
+005CC:  MOVWF  xF2
+005CE:  MOVLW  01
+005D0:  MOVWF  xF5
+005D2:  MOVLW  2C
+005D4:  MOVWF  xF4
+005D6:  RCALL  02A0
+.................... } 
+005D8:  GOTO   06A6 (RETURN)
+.................... void main()  
+.................... { 
+005DC:  CLRF   FF8
+005DE:  BCF    FD0.7
+005E0:  BSF    07.7
+005E2:  CLRF   FEA
+005E4:  CLRF   FE9
+005E6:  BCF    F7E.3
+005E8:  MOVLW  40
+005EA:  MOVWF  FAF
+005EC:  MOVLW  A6
+005EE:  MOVWF  FAC
+005F0:  MOVLW  90
+005F2:  MOVWF  FAB
+005F4:  BSF    F7C.3
+005F6:  MOVLW  2A
+005F8:  MOVWF  F6F
+005FA:  MOVLW  00
+005FC:  MOVWF  F7D
+005FE:  MOVLW  A6
+00600:  MOVWF  F6C
+00602:  MOVLW  90
+00604:  MOVWF  F6B
+00606:  CLRF   1B
+00608:  CLRF   1C
+0060A:  CLRF   1D
+0060C:  CLRF   1E
+0060E:  CLRF   1F
+00610:  CLRF   20
+00612:  CLRF   21
+00614:  CLRF   22
+00616:  CLRF   23
+00618:  CLRF   24
+0061A:  CLRF   25
+0061C:  CLRF   26
+0061E:  CLRF   x8B
+00620:  CLRF   xF1
+00622:  MOVF   FC1,W
+00624:  ANDLW  C0
+00626:  IORLW  0F
+00628:  MOVWF  FC1
+0062A:  MOVLW  07
+0062C:  MOVWF  FB4
+....................    init(); 
+0062E:  BRA    0180
+....................   // while(true){fprintf(PIC,"wwww");} 
+....................  /* 
+....................    while(true){ 
+....................       servoLeft(512,100);       
+....................       servoRight(512,100); 
+....................       delay_ms(1000); 
+....................       servoLeft(300,100); 
+....................       servoRight(700,100); 
+....................       delay_ms(1000); 
+....................    } 
+....................    */ 
+....................    while(true){ 
+....................     
+....................    
+....................    if(buttonBlue==0&&state==0) 
+00630:  BSF    F95.0
+00632:  BTFSC  F83.0
+00634:  BRA    0640
+00636:  MOVF   1D,F
+00638:  BNZ   0640
+....................    { 
+....................       state=1; 
+0063A:  MOVLW  01
+0063C:  MOVWF  1D
+....................    } 
+....................    else if(buttonBlue==1&&state==1) 
+0063E:  BRA    064E
+00640:  BSF    F95.0
+00642:  BTFSS  F83.0
+00644:  BRA    064E
+00646:  DECFSZ 1D,W
+00648:  BRA    064E
+....................    { 
+....................       home_test_seesaw(); 
+0064A:  BRA    0332
+....................       state=0; 
+0064C:  CLRF   1D
+....................    } 
+....................    if(buttonWhite==0&&state1==0) 
+0064E:  BSF    F95.1
+00650:  BTFSC  F83.1
+00652:  BRA    065E
+00654:  MOVF   1E,F
+00656:  BNZ   065E
+....................    { 
+....................       state1=1; 
+00658:  MOVLW  01
+0065A:  MOVWF  1E
+....................    } 
+....................    else if(buttonWhite==1&&state1==1) 
+0065C:  BRA    066C
+0065E:  BSF    F95.1
+00660:  BTFSS  F83.1
+00662:  BRA    066C
+00664:  DECFSZ 1E,W
+00666:  BRA    066C
+....................    { 
+....................       hole_move_red(); 
+00668:  BRA    0364
+....................       state1=0; 
+0066A:  CLRF   1E
+....................    } 
+....................    if(buttonBlack==0&&state2==0) 
+0066C:  BSF    F95.2
+0066E:  BTFSC  F83.2
+00670:  BRA    067C
+00672:  MOVF   1F,F
+00674:  BNZ   067C
+....................    { 
+....................       state2=1; 
+00676:  MOVLW  01
+00678:  MOVWF  1F
+....................    } 
+....................    else if(buttonBlack==1&&state2==1) 
+0067A:  BRA    068A
+0067C:  BSF    F95.2
+0067E:  BTFSS  F83.2
+00680:  BRA    068A
+00682:  DECFSZ 1F,W
+00684:  BRA    068A
+....................    { 
+....................       //seesaw(); 
+....................       hole_move_blue(); 
+00686:  BRA    04C6
+....................       state2=0; 
+00688:  CLRF   1F
+....................    } 
+....................    if(buttonGreen==0&&state3==0) 
+0068A:  BSF    F95.3
+0068C:  BTFSC  F83.3
+0068E:  BRA    069A
+00690:  MOVF   20,F
+00692:  BNZ   069A
+....................    { 
+....................       state3=1; 
+00694:  MOVLW  01
+00696:  MOVWF  20
+....................    } 
+....................    else if(buttonGreen==1&&state3==1) 
+00698:  BRA    06A8
+0069A:  BSF    F95.3
+0069C:  BTFSS  F83.3
+0069E:  BRA    06A8
+006A0:  DECFSZ 20,W
+006A2:  BRA    06A8
+....................    { 
+....................       home(); 
+006A4:  BRA    05B0
+....................       state3=0; 
+006A6:  CLRF   20
+....................    } 
+....................    //firtTosecond_hole(); 
+....................       //output_low(keeperLeft); 
+....................       //testSwitch(); 
+....................     // fprintf(servo,"www"); 
+....................       
+....................  
+....................    } 
+006A8:  BRA    0630
+.................... } 
+006AA:  SLEEP 
+
+Configuration Fuses:
+   Word  1: C200   HS IESO FCMEN
+   Word  2: 0E19   NOBROWNOUT WDT128 NOWDT BORV20 NOPUT BORV20
+   Word  3: 87F3   CCP2C1 LPT1OSC MCLR MCU NOWAIT BW16 ABW20 ECCPE
+   Word  4: 00B1   STVREN NODEBUG NOLVP NOXINST BBSIZ4K
+   Word  5: C0FF   NOPROTECT NOCPD NOCPB
+   Word  6: E0FF   NOWRT NOWRTD NOWRTC NOWRTB
+   Word  7: 40FF   NOEBTRB NOEBTR

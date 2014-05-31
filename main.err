@@ -1,0 +1,10 @@
+>>> Warning 206 "main.c" Line 157(1,1): Variable of this data type is never greater than this constant
+>>> Warning 204 "main.c" Line 157(1,1): Condition always FALSE
+>>> Warning 206 "main.c" Line 160(1,1): Variable of this data type is never greater than this constant
+>>> Warning 204 "main.c" Line 160(1,1): Condition always FALSE
+>>> Warning 203 "main.c" Line 323(1,1): Condition always TRUE
+>>> Warning 202 "main.c" Line 20(13,20): Variable never used:   cntStep
+>>> Warning 202 "main.c" Line 21(17,28): Variable never used:   toggle_feed
+>>> Warning 202 "main.c" Line 30(18,21): Variable never used:   err
+      Memory usage:   ROM=1%      RAM=6% - 7%
+      0 Errors,  8 Warnings.
